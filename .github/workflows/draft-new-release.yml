@@ -64,6 +64,11 @@ jobs:
       - name: Push new branch
         run: git push origin release/${{ github.event.inputs.version }}
 
+      - name: Gather PR Data
+        id: pr_data
+        run: |
+          gh pr list --search "sort:created-asc" --state merged --json "title,mergedAt,number,url" --limit 1000
+
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@1.0.0
         env:
@@ -78,6 +83,8 @@ jobs:
           # You should obviously adopt it to say the truth depending on your release workflow :)
           body: |
             Hi @${{ github.actor }}!
+
+            pr_data.output is ${{ pr_data.outputs }}
 
             ${{ gh pr list --search "sort:created-asc" --state merged --json "title,mergedAt,number,url" --limit 1000}}
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
