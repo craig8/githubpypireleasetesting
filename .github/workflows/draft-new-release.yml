@@ -66,6 +66,8 @@ jobs:
 
       - name: Gather PR Data
         id: pr_data
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr list --search "sort:created-asc" --state merged --json "title,mergedAt,number,url" --limit 1000
 
