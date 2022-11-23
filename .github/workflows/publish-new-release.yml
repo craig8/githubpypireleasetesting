@@ -43,7 +43,7 @@ jobs:
           draft: false
           prerelease: false
           body: |
-            $(gh pr list --search "sort:created-asc" --state merged --json "title,mergedAt,number,url" --limit 1000)
+            ${{gh pr list --search "sort:created-asc" --state merged --json "title,mergedAt,number,url" --limit 1000}}
           
 
       - name: Merge main into develop branch
