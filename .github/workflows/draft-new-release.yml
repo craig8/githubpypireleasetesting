@@ -69,7 +69,10 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "::set-output name=RESULTS::$(gh pr list --search 'sort:created-asc' --state merged --json 'title,mergedAt,number,url' --limit 1000)"
+          for result in $(gh pr list --search 'sort:created-asc' --state merged --json 'title,mergedAt,number,url' --limit 1000); do
+            echo $result
+          done
+          echo "::set-output name=RESULTS::'woot'"
 
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@1.0.0
