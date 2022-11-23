@@ -69,7 +69,7 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr list --search "sort:created-asc" --state merged --json "title,mergedAt,number,url" --limit 1000
+          echo "::set-output name=RESULTS::$(gh pr list --search 'sort:created-asc' --state merged --json 'title,mergedAt,number,url' --limit 1000)"
 
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@1.0.0
@@ -86,7 +86,7 @@ jobs:
           body: |
             Hi @${{ github.actor }}!
 
-            pr_data.output is ${{ pr_data.outputs }}
+            pr_data.output is ${{ pr_data.outputs.RESULTS }}
 
             ${{ gh pr list --search "sort:created-asc" --state merged --json "title,mergedAt,number,url" --limit 1000}}
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
