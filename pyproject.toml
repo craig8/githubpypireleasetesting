@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "githubpypireleasetesting"
-version = "0.1.0"
+version = "0.2.0"
 description = "A test for actions to release to pypi testing"
 authors = ["C. Allwardt <3979063+craig8@users.noreply.github.com>"]
 license = "MIT"
