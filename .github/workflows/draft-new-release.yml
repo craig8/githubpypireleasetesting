@@ -29,7 +29,7 @@ jobs:
           installer-parallel: true
 
       - name: Create release branch off of develop branch
-        run: git checkout -b release/${{ github.event.inputs.version }} develop
+        run: git checkout -b release/${{ github.event.inputs.version }} origin/develop
 
       # - name: Update changelog
       #   uses: thomaseizinger/keep-a-changelog-new-release@1.1.0
