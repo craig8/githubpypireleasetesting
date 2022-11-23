@@ -42,6 +42,9 @@ jobs:
           name: ${{ env.RELEASE_VERSION }}
           draft: false
           prerelease: false
+          body: |
+            $(gh pr list --search "sort:created-asc" --state merged --json "title,mergedAt,number,url" --limit 1000)
+          
 
       - name: Merge main into develop branch
         uses: thomaseizinger/create-pull-request@1.0.0
@@ -50,7 +53,7 @@ jobs:
         with:
           head: main
           base: develop
-          title: Merge main into dev branch
+          title: Merge main into develop branch
           body: |
             This PR merges the main branch back into develop.
             This happens to ensure that the updates that happend on the release branch.
