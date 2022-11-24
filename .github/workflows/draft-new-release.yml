@@ -91,7 +91,7 @@ jobs:
           body: |
             Hi @${{ github.actor }}!
 
-            ${{ fromJSON(steps.pr_data.outputs.RESULTS) }}
+            ${{ fromJSON(steps.pr_data.outputs.RESULTS) | jq . }}
 
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
             I've bumped the versions in the pyproject.toml file in this commit: ${{ steps.make-commit.outputs.commit }}.
