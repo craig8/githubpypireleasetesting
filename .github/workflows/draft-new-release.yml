@@ -69,10 +69,9 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          for result in $(gh pr list --search 'sort:created-asc' --state merged --json 'title,mergedAt,number,url' --limit 1000); do
-            echo $result
-          done
-          echo "::set-output name=RESULTS::'woot'"
+          data=$(gh pr list --state merged --json number,title,url --template '{{range .}}{{tablerow (printf "#%v" .number | autocolor "green") .title }}{{end}}' --limit 1000)
+          data="## Merged Pull Requests\n\n${data}"
+          echo "::set-output name=RESULTS::${{data}}"
 
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@1.0.0
