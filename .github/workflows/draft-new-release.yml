@@ -69,7 +69,7 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          data=$(gh pr list --state merged --json number,title,url --template '{{range .}}{{tablerow (printf "#%v" .number | autocolor "green") .title }}{{end}}' --limit 1000)
+          data=toJSON($(gh pr list --state merged --json number,title,url --template '{{range .}}{{tablerow (printf "#%v" .number | autocolor "green") .title }}{{end}}' --limit 1000))
           echo "::set-output name=RESULTS::$data"
 
       - name: Create pull request
