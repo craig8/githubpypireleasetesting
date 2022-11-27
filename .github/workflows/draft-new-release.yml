@@ -97,8 +97,6 @@ jobs:
           body: |
             Hi @${{ github.actor }}!
 
-            ${{ steps.changelog.outputs.changelog }}
-
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
             I've bumped the versions in the pyproject.toml file in this commit: ${{ steps.make-commit.outputs.commit }}.
 

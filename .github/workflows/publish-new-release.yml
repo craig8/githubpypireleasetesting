@@ -37,6 +37,7 @@ jobs:
         uses: heinrichreimer/github-changelog-generator-action@v2.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          header-label: "Release for Version: ${{ env.RELEASE_VERSION }}"
 
       - name: Create Release
         uses: thomaseizinger/create-release@1.0.0
