@@ -9,6 +9,7 @@ on:
 
 jobs:
   draft-new-release:
+    if: github.ref == 'refs/heads/develop'
     name: "Draft a new release"
     runs-on: ubuntu-latest
     steps:    
@@ -64,6 +65,23 @@ jobs:
       - name: Push new branch
         run: git push origin release/${{ github.event.inputs.version }}
 
+      - name: "✏️ Generate release changelog"
+        id: changelog
+        uses: heinrichreimer/github-changelog-generator-action@v2.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Gather PR Data
+      #   id: pr_data
+      #   env: 
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     data=$(gh pr list --state merged --json number,title,url --limit 1000)
+      #     data="${data//'%'/'%25'}"
+      #     data="${data//$'\n'/'%0A'}"
+      #     data="${data//$'\r'/'%0D'}"
+      #     echo "::set-output name=RESULTS::$data"
+
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@1.0.0
         env:
@@ -78,6 +96,8 @@ jobs:
           # You should obviously adopt it to say the truth depending on your release workflow :)
           body: |
             Hi @${{ github.actor }}!
+
+            ${{ steps.changelog.outputs.changelog }}
 
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
             I've bumped the versions in the pyproject.toml file in this commit: ${{ steps.make-commit.outputs.commit }}.
