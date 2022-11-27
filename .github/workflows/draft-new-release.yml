@@ -65,16 +65,30 @@ jobs:
       - name: Push new branch
         run: git push origin release/${{ github.event.inputs.version }}
 
-      - name: Gather PR Data
-        id: pr_data
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get Previous Tag
         run: |
-          data=$(gh pr list --state merged --json number,title,url --limit 1000)
-          data="${data//'%'/'%25'}"
-          data="${data//$'\n'/'%0A'}"
-          data="${data//$'\r'/'%0D'}"
-          echo "::set-output name=RESULTS::$data"
+          PREV_TAG=$(git describe --abbrev=0 --tags "${{ github.ref }}^")
+          echo "::set-env name=baseRef::$PREV_TAG"
+
+      - name: Generate Changelog
+        id: generate_changelog
+        uses: nblagoev/pull-release-notes-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          base-ref: ${{ env.baseRef }}
+          head-ref: ${{ github.ref }}
+
+      # - name: Gather PR Data
+      #   id: pr_data
+      #   env: 
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     data=$(gh pr list --state merged --json number,title,url --limit 1000)
+      #     data="${data//'%'/'%25'}"
+      #     data="${data//$'\n'/'%0A'}"
+      #     data="${data//$'\r'/'%0D'}"
+      #     echo "::set-output name=RESULTS::$data"
 
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@1.0.0
@@ -91,7 +105,7 @@ jobs:
           body: |
             Hi @${{ github.actor }}!
 
-            ${{ fromJSON(steps.pr_data.outputs.RESULTS) | jq . }}
+            ${{ steps.generate_changelog.outputs.result }}
 
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
             I've bumped the versions in the pyproject.toml file in this commit: ${{ steps.make-commit.outputs.commit }}.
