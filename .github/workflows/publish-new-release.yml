@@ -38,6 +38,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           header-label: "Release for Version: ${{ env.RELEASE_VERSION }}"
+          usernames-as-github-logins: true
+          no-unreleased: true
 
       - name: Create Release
         uses: thomaseizinger/create-release@1.0.0
