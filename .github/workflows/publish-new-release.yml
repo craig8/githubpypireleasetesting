@@ -37,7 +37,10 @@ jobs:
         uses: heinrichreimer/github-changelog-generator-action@v2.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
+# unreleased=false
+# header="# Release"
+# future-release=3.0.0
+# since-tag=1.0.0
       - name: Create Release
         uses: thomaseizinger/create-release@1.0.0
         env:
