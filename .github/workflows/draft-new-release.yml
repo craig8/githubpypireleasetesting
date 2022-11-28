@@ -6,6 +6,9 @@ on:
       version:
         description: 'The version you want to release.'
         required: true
+      old_version:
+        description: 'The version before this new release'
+        required: true
 
 jobs:
   draft-new-release:
@@ -60,9 +63,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           unreleased: false
-          header-label: "# Release ${{ github.event.inputs.version }}"
-          header: "# Release ${{ github.event.inputs.version }}"
-          header_label: "# Release ${{ github.event.inputs.version }}"
+          headerLabel: "# Release ${{ github.event.inputs.version }}"
+          sinceTag: "${{ github.event.inputs.old_version }}"
           
 
       # - name: Gather PR Data
