@@ -61,6 +61,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           unreleased: false
           header-label: "# Release ${{ github.event.inputs.version }}"
+          header: "# Release ${{ github.event.inputs.version }}"
+          header_label: "# Release ${{ github.event.inputs.version }}"
           
 
       # - name: Gather PR Data
