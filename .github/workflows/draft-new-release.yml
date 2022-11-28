@@ -59,6 +59,8 @@ jobs:
         uses: heinrichreimer/github-changelog-generator-action@v2.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          unreleased: false
+          header: "# Release ${{ github.event.inputs.version }}"
 
       # - name: Gather PR Data
       #   id: pr_data
@@ -84,9 +86,11 @@ jobs:
           # We are claiming things here based on the `publish-new-release.yml` workflow.
           # You should obviously adopt it to say the truth depending on your release workflow :)
           body: |
-            Hi @${{ github.actor }}!
-
             This PR was created in response to a manual trigger of the release workflow here: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
             I've bumped the versions in the pyproject.toml file in this commit: ${{ steps.make-commit.outputs.commit }}.
 
             Merging this PR will create a GitHub release and upload any assets that are created as part of the release build.
+
+            The following will be the release notes
+
+            ${{ steps.changelog.outputs.changelog }}
